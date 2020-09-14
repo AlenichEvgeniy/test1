@@ -1,0 +1,554 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Displaying the canvas</title>
+<body>
+<script src="../pixi/pixi.min.js"></script>
+<script>
+
+//Create a Pixi Application
+let app = new PIXI.Application({ 
+    width: 256, 
+    height: 256,                       
+    antialiasing: true, 
+    transparent: false, 
+    resolution: 1
+  }
+);
+
+
+document.body.appendChild(app.view);
+
+
+app.renderer.view.style.position = "absolute";
+app.renderer.view.style.display = "block";
+app.renderer.autoResize = true;
+app.renderer.resize(750, window.innerHeight);
+app.renderer.backgroundColor = 0xffffff;
+
+
+    let line = new PIXI.Graphics();
+    line.lineStyle(4, 0x000000, 1);
+    line.moveTo(0,window.innerHeight-250);
+    line.lineTo(736 ,window.innerHeight-250);   
+    app.stage.addChild(line);
+
+    let kvadrat = new PIXI.Graphics(); 
+
+    kvadrat.beginFill( 0xffffff);
+    kvadrat.lineStyle(4, 0x000000, 1);
+    kvadrat.drawRect(0, 0, 236, 236);
+    kvadrat.endFill();
+    kvadrat.x = 500;
+    kvadrat.y = window.innerHeight-kvadrat.height-10;
+    app.stage.addChild(kvadrat);
+
+     let triangle = new PIXI.Graphics();
+     triangle.lineStyle(4, 0x000000, 1);
+     triangle.beginFill( 0xffffff);
+     triangle.drawPolygon([
+      246, 0,               //First point
+        246/2, 0.8660254*246,              //Second point
+           0, 0             //Third point
+    ]);
+         triangle.endFill();
+     triangle.x = 0;
+     triangle.y = window.innerHeight-kvadrat.height-7;
+     app.stage.addChild(triangle);
+    
+    
+     let circle = new PIXI.Graphics();
+     circle.beginFill(0xffffff);
+       circle.lineStyle(4, 0x000000, 1);
+     circle.drawCircle(0, 0, 100);
+     circle.endFill();
+     circle.x  = 375;
+     circle.y  = window.innerHeight-circle.height*0.7;
+    app.stage.addChild(circle);
+    
+    
+
+
+    
+function madeKvadrat () {
+    let rectangle = new PIXI.Graphics(); 
+
+    rectangle.beginFill(randomInt(0x000000, 0xfffffe));
+    let size = randomInt(40, 80);
+    rectangle.drawRect(0, 0, size, size);
+    rectangle.endFill();
+         rectangle.interactive = true;
+     rectangle.buttonMode = true;
+    rectangle.x = randomInt(rectangle.width, 750-rectangle.width);
+    rectangle.y = randomInt(rectangle.width, window.innerHeight-250 - rectangle.height);
+    return rectangle;
+}    
+ 
+let kvadrat1 = madeKvadrat();
+app.stage.addChild(kvadrat1);
+kvadrat1.pivot.x = kvadrat1.height/2;    
+kvadrat1.pivot.y = kvadrat1.width/2;    
+    
+let kvadrat2 = madeKvadrat();
+app.stage.addChild(kvadrat2);
+kvadrat2.pivot.x = kvadrat1.height/2;    
+kvadrat2.pivot.y = kvadrat1.width/2;       
+
+let kvadrat3 = madeKvadrat();
+app.stage.addChild(kvadrat3);
+kvadrat3.pivot.x = kvadrat1.height/2;    
+kvadrat3.pivot.y = kvadrat1.width/2;   
+    
+    
+ function madeKrug () {
+     let circle = new PIXI.Graphics();
+
+     circle.beginFill(randomInt(0x000000, 0xfffffe));
+     let size = randomInt(40, 80);
+     circle.drawCircle(0, 0, size);
+     circle.endFill();
+     circle.interactive = true;
+     circle.buttonMode = true;
+     circle.x  = randomInt(circle.width, 750-circle.width);
+     circle.y  = randomInt(circle.width, window.innerHeight-250 - circle.height);
+     return circle;
+}       
+    
+    
+let krug1 = madeKrug();  
+app.stage.addChild(krug1);   
+    
+let krug2 = madeKrug();  
+app.stage.addChild(krug2);    
+    
+let krug3 = madeKrug();  
+app.stage.addChild(krug3);    
+    
+    
+ function madeTreugol () {
+     let triangle = new PIXI.Graphics();
+     let size = randomInt(40, 80);
+     triangle.beginFill(randomInt(0x000000, 0xfffffe));
+     triangle.drawPolygon([
+      size, 0,               //First point
+        size/2, 0.8660254*size,              //Second point
+           0, 0             //Third point
+    ]);
+     triangle.endFill();
+             triangle.interactive = true;
+     triangle.buttonMode = true;
+     triangle.x = randomInt(triangle.width, 750-triangle.width);;
+     triangle.y = randomInt(triangle.width, window.innerHeight-250 - triangle.height);
+
+     return triangle;
+}       
+       
+    
+let treugol1 = madeTreugol();  
+app.stage.addChild(treugol1);     
+treugol1.pivot.x = treugol1.height/2;    
+treugol1.pivot.y = treugol1.width/2;    
+    
+    
+    
+let treugol2 = madeTreugol();  
+app.stage.addChild(treugol2);      
+treugol2.pivot.x = treugol2.height/2;    
+treugol2.pivot.y = treugol2.width/2;     
+    
+    
+let treugol3 = madeTreugol();  
+app.stage.addChild(treugol3);     
+treugol3.pivot.x = treugol3.height/2;    
+treugol3.pivot.y = treugol3.width/2;     
+    
+
+
+app.ticker.add(delta => gameLoop(delta));
+
+function getRandomIntInclusive() {
+  min = Math.ceil(0);
+  max = Math.floor(1);
+ return Math.floor(Math.random() * (1 - 0 + 1)) + 0; //Максимум и минимум включаются
+}
+
+    let znak = getRandomIntInclusive(); 
+    
+function gameLoop(delta){  
+    if (znak == 1){
+        treugol1.rotation  -= 0.01;
+        treugol2.rotation  += 0.01;
+        treugol3.rotation  -= 0.01;
+        kvadrat1.rotation  -= 0.01;
+        kvadrat2.rotation  += 0.01;
+        kvadrat3.rotation  -= 0.01;
+    }
+    else {
+        treugol1.rotation  -= 0.01;
+        treugol2.rotation  += 0.01;
+        treugol3.rotation  -= 0.01;
+        kvadrat1.rotation  += 0.01; 
+        kvadrat2.rotation  -= 0.01;
+        kvadrat3.rotation  += 0.01;
+    }
+}
+     
+
+//---------------------------------------------
+    const ondragstart = event =>{
+        krug1.data = event.data;
+        krug1.dragging = true;
+        
+    };
+    let x1 = krug1.x;
+    let y1 = krug1.y;
+    const ondragend = event =>{
+        delete krug1.data;
+        krug1.dragging = false;
+        if (hitTestRectangle(krug1,circle)){
+        krug1.visible = false;
+        }else {
+            krug1.x = x1;
+            krug1.y = y1;
+        }
+    };
+    
+    const ondragMove = event =>{
+      if(krug1.dragging === true){
+          const newPosition = krug1.data.global;
+          krug1.x = newPosition.x;
+          krug1.y = newPosition.y;
+      } 
+
+    };
+    
+    krug1.on('pointerdown', ondragstart);
+    krug1.on('pointerup', ondragend);
+    krug1.on('pointerupoutside', ondragend);
+    krug1.on('pointermove', ondragMove);
+    
+    
+    
+    
+        const ondragstart2 = event =>{
+        krug2.data = event.data;
+        krug2.dragging = true;
+        
+    };
+    let x2 = krug2.x;
+    let y2 = krug2.y;
+    const ondragend2 = event =>{
+        delete krug2.data;
+        krug2.dragging = false;
+        if (hitTestRectangle(krug2,circle)){
+        krug2.visible = false;
+        }else {
+            krug2.x = x2;
+            krug2.y = y2;
+        }
+    };
+    
+    const ondragMove2 = event =>{
+      if(krug2.dragging === true){
+          const newPosition = krug2.data.global;
+          krug2.x = newPosition.x;
+          krug2.y = newPosition.y;
+      } 
+
+    };
+    
+    krug2.on('pointerdown', ondragstart2);
+    krug2.on('pointerup', ondragend2);
+    krug2.on('pointerupoutside', ondragend2);
+    krug2.on('pointermove', ondragMove2);
+    
+    
+            const ondragstart3 = event =>{
+        krug3.data = event.data;
+        krug3.dragging = true;
+        
+    };
+    
+    let x3 = krug3.x;
+    let y3 = krug3.y;
+    const ondragend3 = event =>{
+        delete krug3.data;
+        krug3.dragging = false;
+        if (hitTestRectangle(krug3,circle)){
+        krug3.visible = false;
+        }else {
+            krug3.x = x3;
+            krug3.y = y3;
+        }
+    };
+    
+    const ondragMove3 = event =>{
+      if(krug3.dragging === true){
+          const newPosition = krug3.data.global;
+          krug3.x = newPosition.x;
+          krug3.y = newPosition.y;
+      } 
+
+    };
+    
+    krug3.on('pointerdown', ondragstart3);
+    krug3.on('pointerup', ondragend3);
+    krug3.on('pointerupoutside', ondragend3);
+    krug3.on('pointermove', ondragMove3);
+ //-------------------------------------------------------   
+    
+   const ondragstartK1 = event =>{
+        kvadrat1.data = event.data;
+        kvadrat1.dragging = true;
+        
+    };
+    let xk1 = kvadrat1.x;
+    let yk1 = kvadrat1.y;
+    const ondragendk1 = event =>{
+        delete kvadrat1.data;
+        kvadrat1.dragging = false;
+        if (hitTestRectangle(kvadrat1,kvadrat)){
+        kvadrat1.visible = false;
+        }else {
+           kvadrat1.x = xk1;
+           kvadrat1.y = yk1;
+        }
+    };
+    
+    const ondragMovek1 = event =>{
+      if(kvadrat1.dragging === true){
+          const newPosition = kvadrat1.data.global;
+          kvadrat1.x = newPosition.x;
+         kvadrat1.y = newPosition.y;
+      } 
+
+    };
+    
+    kvadrat1.on('pointerdown', ondragstartK1);
+    kvadrat1.on('pointerup', ondragendk1);
+   kvadrat1.on('pointerupoutside', ondragendk1);
+    kvadrat1.on('pointermove', ondragMovek1);
+    
+     const ondragstartK2 = event =>{
+        kvadrat2.data = event.data;
+        kvadrat2.dragging = true;
+        
+    };
+    let xk2 = kvadrat2.x;
+    let yk2 = kvadrat2.y;
+    const ondragendk2 = event =>{
+        delete kvadrat2.data;
+        kvadrat2.dragging = false;
+        if (hitTestRectangle(kvadrat2,kvadrat)){
+        kvadrat2.visible = false;
+        }else {
+           kvadrat2.x = xk2;
+           kvadrat2.y = yk2;
+        }
+    };
+    
+    const ondragMovek2 = event =>{
+      if(kvadrat2.dragging === true){
+          const newPosition = kvadrat2.data.global;
+          kvadrat2.x = newPosition.x;
+         kvadrat2.y = newPosition.y;
+      } 
+
+    };
+    
+    kvadrat2.on('pointerdown', ondragstartK2);
+    kvadrat2.on('pointerup', ondragendk2);
+   kvadrat2.on('pointerupoutside', ondragendk2);
+    kvadrat2.on('pointermove', ondragMovek2);
+    
+    
+     const ondragstartk3 = event =>{
+        kvadrat3.data = event.data;
+        kvadrat3.dragging = true;
+        
+    };
+    let xk3 = kvadrat3.x;
+    let yk3 = kvadrat3.y;
+    const ondragendk3 = event =>{
+        delete kvadrat3.data;
+        kvadrat3.dragging = false;
+        if (hitTestRectangle(kvadrat3,kvadrat)){
+        kvadrat3.visible = false;
+        }else {
+           kvadrat3.x = xk3;
+           kvadrat3.y = yk3;
+        }
+    };
+    
+    const ondragMovek3 = event =>{
+      if(kvadrat3.dragging === true){
+          const newPosition = kvadrat3.data.global;
+          kvadrat3.x = newPosition.x;
+         kvadrat3.y = newPosition.y;
+      } 
+
+    };
+    
+    kvadrat3.on('pointerdown', ondragstartk3);
+    kvadrat3.on('pointerup', ondragendk3);
+   kvadrat3.on('pointerupoutside', ondragendk3);
+    kvadrat3.on('pointermove', ondragMovek3);
+    
+//=====================================================================    
+         const ondragstartT1 = event =>{
+        treugol1.data = event.data;
+        treugol1.dragging = true;
+        
+    };
+    let xt1 = treugol1.x;
+    let yt1 = treugol1.y;
+    const ondragendT1 = event =>{
+        delete treugol1.data;
+        treugol1.dragging = false;
+        if (hitTestRectangle(treugol1,triangle)){
+        treugol1.visible = false;
+        }else {
+           treugol1.x = xt1;
+           treugol1.y = yt1;
+        }
+    };
+    
+    const ondragMoveT1 = event =>{
+      if(treugol1.dragging === true){
+          const newPosition = treugol1.data.global;
+          treugol1.x = newPosition.x;
+         treugol1.y = newPosition.y;
+      } 
+
+    };
+    
+    treugol1.on('pointerdown', ondragstartT1);
+    treugol1.on('pointerup', ondragendT1);
+   treugol1.on('pointerupoutside', ondragendT1);
+    treugol1.on('pointermove', ondragMoveT1);
+         const ondragstartT2 = event =>{
+        treugol2.data = event.data;
+        treugol2.dragging = true;
+        
+    };
+    let xt2 = treugol2.x;
+    let yt2 = treugol2.y;
+    const ondragendT2 = event =>{
+        delete treugol2.data;
+        treugol2.dragging = false;
+        if (hitTestRectangle(treugol2,triangle)){
+        treugol2.visible = false;
+        }else {
+           treugol2.x = xt2;
+           treugol2.y = yt2;
+        }
+    };
+    
+    const ondragMoveT2 = event =>{
+      if(treugol2.dragging === true){
+          const newPosition = treugol2.data.global;
+          treugol2.x = newPosition.x;
+         treugol2.y = newPosition.y;
+      } 
+
+    };
+    
+    treugol2.on('pointerdown', ondragstartT2);
+    treugol2.on('pointerup', ondragendT2);
+   treugol2.on('pointerupoutside', ondragendT2);
+    treugol2.on('pointermove', ondragMoveT2);
+         const ondragstartT3 = event =>{
+        treugol3.data = event.data;
+        treugol3.dragging = true;
+        
+    };
+    let xt3 = treugol3.x;
+    let yt3 = treugol3.y;
+    const ondragendT3 = event =>{
+        delete treugol3.data;
+        treugol3.dragging = false;
+        if (hitTestRectangle(treugol3,triangle)){
+        treugol3.visible = false;
+        }else {
+           treugol3.x = xt3;
+           treugol3.y = yt3;
+        }
+    };
+    
+    const ondragMoveT3 = event =>{
+      if(treugol3.dragging === true){
+          const newPosition = treugol3.data.global;
+          treugol3.x = newPosition.x;
+         treugol3.y = newPosition.y;
+      } 
+
+    };
+    
+    treugol3.on('pointerdown', ondragstartT3);
+    treugol3.on('pointerup', ondragendT3);
+   treugol3.on('pointerupoutside', ondragendT3);
+    treugol3.on('pointermove', ondragMoveT3);
+    
+  function hitTestRectangle(r1, r2) {
+
+  //Define the variables we'll need to calculate
+  let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+
+  //hit will determine whether there's a collision
+  hit = false;
+
+  //Find the center points of each sprite
+  r1.centerX = r1.x + r1.width / 2;
+  r1.centerY = r1.y + r1.height / 2;
+  r2.centerX = r2.x + r2.width / 2;
+  r2.centerY = r2.y + r2.height / 2;
+
+  //Find the half-widths and half-heights of each sprite
+  r1.halfWidth = r1.width / 2;
+  r1.halfHeight = r1.height / 2;
+  r2.halfWidth = r2.width / 2;
+  r2.halfHeight = r2.height / 2;
+
+  //Calculate the distance vector between the sprites
+  vx = r1.centerX - r2.centerX;
+  vy = r1.centerY - r2.centerY;
+
+  //Figure out the combined half-widths and half-heights
+  combinedHalfWidths = r1.halfWidth + r2.halfWidth;
+  combinedHalfHeights = r1.halfHeight + r2.halfHeight;
+
+  //Check for a collision on the x axis
+  if (Math.abs(vx) < combinedHalfWidths) {
+
+    //A collision might be occurring. Check for a collision on the y axis
+    if (Math.abs(vy) < combinedHalfHeights) {
+
+      //There's definitely a collision happening
+      hit = true;
+    } else {
+
+      //There's no collision on the y axis
+      hit = false;
+    }
+  } else {
+
+    //There's no collision on the x axis
+    hit = false;
+  }
+
+  //`hit` will be either `true` or `false`
+  return hit;
+};  
+    
+    
+        
+    
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}    
+    
+    
+    
+    
+</script>
+</body>
+
